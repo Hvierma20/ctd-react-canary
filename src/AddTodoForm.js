@@ -8,6 +8,7 @@ function AddTodoForm(props){
         const newTodoTitle = event.target.value;
             setTodoTitle(newTodoTitle);
             console.log("event-test", event)
+
     }; 
 
     const handleAddTodo = (event) => {
