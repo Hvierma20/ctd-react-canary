@@ -1,16 +1,23 @@
 import React from 'react';
 
-const TodoListItem = ({todo, onRemoveTodo}) => {
-
+function TodoListItem({ todoList, onRemoveTodo }) {
     return (
-    <li>
-        {/* <span>{todo.id}: </span> */}
-        <span>{todo.title}</span>
-        <button type="button" onClick={() => onRemoveTodo(todo.id)}>Remove</button>
-    </li> 
+      <ul>
+        {todoList.map((item) => (
+          <li>
+            My id is: {item.id}My title is: {item.title}
+            <button
+              onClick={() => {
+                onRemoveTodo(item.id);
+              }}
+            >
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
     );
-
-};
+  }
 
 
 export default TodoListItem; 
