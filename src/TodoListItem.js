@@ -1,23 +1,14 @@
 import React from 'react';
 
-function TodoListItem({ todoList, onRemoveTodo }) {
-    return (
-      <ul>
-        {todoList.map((item) => (
-          <li>
-            My id is: {item.id}My title is: {item.title}
-            <button
-              onClick={() => {
-                onRemoveTodo(item.id);
-              }}
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
-    );
-  }
+function TodoListItem(props) {
+  const { todo } = props;
 
+  return (
+    <li>
+      { todo.fields.Title }
+      <button type="button" onClick={()=>{props.onRemoveTodo(todo.id)}}>Remove</button>
+    </li>
+  );
+}
 
-export default TodoListItem; 
+export default TodoListItem;
