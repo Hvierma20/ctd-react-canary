@@ -11,18 +11,30 @@ function App() {
   const [ todoList, setTodoList ] = React.useState([]);
   const [ isLoading, setIsLoading ] = React.useState(true);
 
+  // React.useEffect(() => {
+  //   fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`,
+  //     {
+  //       method: 'GET',
+  //       headers: {Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`}
+  //     }
+  //   )
+  //   .then(response => response.json())
+  //   .then((data) => {
+  //     setTodoList(data.records)
+  //     setIsLoading(false)
+  //   })
+  // }, []);
+
   React.useEffect(() => {
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`,
-      {
-        method: 'GET',
-        headers: {Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`}
-      }
-    )
-    .then(response => response.json())
-    .then((data) => {
-      setTodoList(data.records)
-      setIsLoading(false)
-    })
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, { headers: { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` } })
+      .then((data) => {
+        return data.json();
+      })
+      .then((data) => {
+        setTodoList(data.records);
+        setIsLoading(false);
+      })
+
   }, []);
 
   React.useEffect(() => {
@@ -44,18 +56,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/">
+        <Route path="/" element={
           <>
             <h1>Todo List</h1>
             <AddTodoForm onAddTodo={addTodo} />
             {isLoading ? (<p>Loading...</p>) : (<TodoList todoList={todoList} onRemoveTodo={removeTodo} />)}
           </>
-        </Route>
-        <Route path="/new">
+        }/>
+        <Route path="/new" element={
           <>
-            <h1>New Todo List</h1>
+          <h1>New Todo List</h1>
           </>
-        </Route>
+        }/>
       </Routes>
     </BrowserRouter>
   );
