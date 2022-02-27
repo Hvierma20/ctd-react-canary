@@ -1,0 +1,19 @@
+
+
+.ListItem {
+    color: blue;
+    margin: 1%;
+    padding: 1%;
+    
+  }
+
+
+
+body {
+    background-color: rgb(196, 186, 243);
+    color: rgb(43, 21, 21);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+} 
+
+
