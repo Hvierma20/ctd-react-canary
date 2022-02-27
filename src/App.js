@@ -4,26 +4,14 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import TodoList from './TodoList';
-import AddTodoForm from './AddTodoForm';
+import TodoList from './components/TodoList';
+import AddTodoForm from './components/AddTodoForm';
+import PropTypes from "prop-types";
 
-function App() {
+function TodoContainer() {
   const [ todoList, setTodoList ] = React.useState([]);
   const [ isLoading, setIsLoading ] = React.useState(true);
 
-  // React.useEffect(() => {
-  //   fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`,
-  //     {
-  //       method: 'GET',
-  //       headers: {Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`}
-  //     }
-  //   )
-  //   .then(response => response.json())
-  //   .then((data) => {
-  //     setTodoList(data.records)
-  //     setIsLoading(false)
-  //   })
-  // }, []);
 
   React.useEffect(() => {
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, { headers: { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` } })
@@ -73,4 +61,7 @@ function App() {
   );
 }
 
-export default App;
+TodoContainer.propTypes = {
+    tableName: PropTypes.string,
+  };
+export default TodoContainer;
