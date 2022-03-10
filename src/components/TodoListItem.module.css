@@ -1,0 +1,37 @@
+
+
+.ListItem {
+    color: rgb(238, 245, 247);
+    margin: 1%;
+    padding: 1%; 
+  }
+
+
+body {
+    background-color: rgb(69, 200, 233);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+} 
+
+.Button{
+  background-color: #163fb1;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  width: 5%;
+  height: 15px;
+  border-radius: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+label{
+    color: #5c0603;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+
