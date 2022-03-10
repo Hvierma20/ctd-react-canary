@@ -1,19 +1,22 @@
 
 
 .ListItem {
-    color: blue;
+    color: rgb(238, 245, 247);
     margin: 1%;
-    padding: 1%;
-    
+    padding: 1%; 
   }
 
 
-
 body {
-    background-color: rgb(196, 186, 243);
+    background-color: rgb(69, 200, 233);
     color: rgb(43, 21, 21);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
 } 
 
+.Button{
+  color: red;
+  margin: 1%;
+  padding: 1%;
+}
 

@@ -8,7 +8,7 @@ function TodoListItem(props) {
   return (
     <li className={style.ListItem}>
       { todo.fields.Title }
-      <button type="button" onClick={()=>{props.onRemoveTodo(todo.id)}}>Remove</button>
+      <button className={style.Button} onClick={()=>{props.onRemoveTodo(todo.id)}}>Remove</button>
     </li>
   );
 }

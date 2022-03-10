@@ -1,33 +1,17 @@
-import React from 'react';
+import { React } from 'react';
 import InputWithLabel from './InputWithLabel';
+import style from './TodoListItem.module.css'
 import PropTypes from "prop-types";
 
-function AddTodoForm(props) {
-    
-  const [ todoTitle, setTodoTitle ] = React.useState('');
-  const { onAddTodo } = props;
 
-  function handleTitleChange(event) {
-    let newTodoTitle = event.target.value;
-    setTodoTitle(newTodoTitle);
-  }
-
-  function handleAddTodo(event) {
-    event.preventDefault();
-    console.log(todoTitle);
-    onAddTodo({
-      title: todoTitle,
-      id: Date.now()
-    });
-    setTodoTitle('');
-  }
+const AddTodoForm = ({ handleAddTodo, handleTitleChange, todoTitle }) => {
 
   return (
       <form onSubmit={handleAddTodo}>
         <InputWithLabel todoTitle={todoTitle} handleTitleChange={handleTitleChange}>
           Title:
         </InputWithLabel>
-        <button>Add</button>
+        <button className={style.Button} >Add</button>
       </form>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { React , useState, useEffect } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -7,61 +7,92 @@ import {
 import TodoList from './components/TodoList';
 import AddTodoForm from './components/AddTodoForm';
 import PropTypes from "prop-types";
+import Airtable from 'airtable';
 
-function TodoContainer() {
-  const [ todoList, setTodoList ] = React.useState([]);
-  const [ isLoading, setIsLoading ] = React.useState(true);
+var base = new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base(process.env.REACT_APP_AIRTABLE_BASE_ID);
 
+function App() {
+  const [ todoList, setTodoList ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
+  const [todoTitle, setTodoTitle] = useState('');
 
-  React.useEffect(() => {
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, { headers: { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` } })
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setTodoList(data.records);
-        setIsLoading(false);
-      })
+  
+  const handleTitleChange = (event) => {
+    const newTodoTitle = event.target.value;
+    setTodoTitle(newTodoTitle);
+  }
 
+  useEffect(() => {
+    fetchTodo();
   }, []);
 
-  React.useEffect(() => {
-    if ( !isLoading ) {
-      localStorage.setItem( 'savedTodoList', JSON.stringify(todoList) );
+  useEffect(() => {
+    if (!isLoading) {
+      localStorage.setItem('savedTodoList', JSON.stringify(todoList));
     }
-  }, [ todoList, isLoading ]);
+  }, [todoList, isLoading]);
 
-  function addTodo(newTodo) {
-    setTodoList( [...todoList, newTodo] );
+  const fetchTodo = () => {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/?view=Grid%20view&sort[0][field]=Title&sort[0][direction]=asc`, { headers: { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` } })
+    .then((data) => {
+      return data.json();
+    })
+    .then((data) => {
+      setTodoList(data.records);
+      setIsLoading(false);
+    })
   }
 
-  function removeTodo(id) {
-    const newTodoList = todoList.filter(li => id !== li.id);
-
-    setTodoList(newTodoList);
+  const handleAddTodo = async (event) => {
+    event.preventDefault();
+    await base('Default').create([
+      {
+        "fields": {
+          "Title": todoTitle
+        }
+      }
+    ], function(err, records) {
+      if (err) {
+        console.log(err);
+      }
+      fetchTodo();
+    });
+    setTodoTitle('');
   }
-  
+
+  const removeTodo = (id) => {
+    base('Default').destroy([id], function(err, deletedRecords) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      fetchTodo();
+  });
+}
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={
-          <>
-            <h1>Todo List</h1>
-            <AddTodoForm onAddTodo={addTodo} />
-            {isLoading ? (<p>Loading...</p>) : (<TodoList todoList={todoList} onRemoveTodo={removeTodo} />)}
-          </>
-        }/>
-        <Route path="/new" element={
-          <>
+      <Route exact path="/" element={
+        <div>
+            <AddTodoForm handleTitleChange={handleTitleChange} todoTitle={todoTitle} handleAddTodo={handleAddTodo} />
+          {
+            isLoading ?
+              <p>Loading...</p> :
+              <TodoList onRemoveTodo={removeTodo} todoList={todoList} />
+          }
+        </div>
+        } />
+
+        <Route exact path="/" element={
           <h1>New Todo List</h1>
-          </>
         }/>
       </Routes>
     </BrowserRouter>
   );
 }
 
-TodoContainer.propTypes = {
+App.propTypes = {
     tableName: PropTypes.string,
   };
-export default TodoContainer;
+export default App;
